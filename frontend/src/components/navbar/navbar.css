@@ -1,0 +1,56 @@
+.navbar {
+  background-color: #232f3e;
+  margin: 0;
+  padding: 0.5rem 1rem;
+  width: 100%;
+}
+
+.nav-links {
+  display: flex;
+  justify-content: flex-start;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 0.5rem;
+}
+
+.nav-item {
+  padding: 0.5rem 0.75rem;
+}
+
+.nav-item-text {
+  font-weight: bold;
+  color: white;
+  text-decoration: none;
+  padding: 0.25rem 0.5rem;
+  display: inline-block;
+  border-radius: 4px;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.nav-item-text:hover {
+  border: 1px solid white;
+  background-color: azure;
+  color: #232f3e;
+}
+
+/* ✅ Responsive styles for mobile */
+@media screen and (max-width: 600px) {
+  .nav-links {
+    flex-direction: column;
+    align-items: stretch; /* Full width */
+    gap: 0; /* Remove horizontal gap */
+  }
+
+  .nav-item {
+    width: 100%;
+    padding: 0.3rem 0;
+  }
+
+  .nav-item-text {
+    width: 100%;
+    text-align: center;
+    padding: 0.5rem;
+    box-sizing: border-box;
+  }
+}

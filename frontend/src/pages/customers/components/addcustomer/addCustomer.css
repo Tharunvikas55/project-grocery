@@ -1,0 +1,20 @@
+.add-customer-container{
+    padding: 10px;
+    border-radius: 8px;
+    margin: auto;
+    box-shadow: 0 10px 10px 10px rgba(0, 0, 0, 0.1);
+}
+
+.customer-form{
+    max-width: 600px;
+    margin: auto;
+}
+
+.uploaded-image{
+    margin-top: 10px;
+    max-width: 100px;
+    max-height: 100px;
+    object-fit: cover;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+}

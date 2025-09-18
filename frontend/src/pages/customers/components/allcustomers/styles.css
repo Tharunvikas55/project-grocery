@@ -1,0 +1,10 @@
+.all-customers-container{
+    display: block;
+  gap: 1rem;
+}
+.top{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}

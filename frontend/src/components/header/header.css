@@ -1,0 +1,15 @@
+.header-component {
+  background-color: #131921;
+  color: white;
+}
+
+.top-container {
+  padding: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.user-section {
+  display: flex;
+  gap: 4rem;
+}
