@@ -4,8 +4,8 @@ const cors = require('cors');
 const bcrypt = require('bcrypt');
 require('dotenv').config();
 const sequelize = require('./src/config/sequelizeConfig');
-const UserModel = require("./src/models/User")// Adjust path as needed
-const CustomerModel = require("./src/models/Customer")// Adjust path as needed
+const UserModel = require("./src/models/User")
+const CustomerModel = require("./src/models/Customer")
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -23,7 +23,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
       return ;
     }
 
-    const hashedPassword = await bcrypt.hash('superAdmin123', 10); // Replace with env var in production
+    const hashedPassword = await bcrypt.hash('superAdmin123', 10); 
 
      await UserModel.create({
       username: 'Super Admin',
@@ -38,10 +38,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
     console.error('❌ Error seeding admin user:', error);
   } 
 }
-
-
-
-// app.use('/api', require('./src/routes'));
 
 sequelize.authenticate().then(async() => {
   console.log('✅ Database connected.');
