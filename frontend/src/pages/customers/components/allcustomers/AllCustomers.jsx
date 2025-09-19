@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
 import axios from "axios";
 import CustomerTable from "./customertable/CustomerTable";
 import SearchInput from "../../../../components/searchInput/SearchInput";
 import { IconUsersGroup } from "@tabler/icons-react";
-
 import Stats from "../../../../components/statsCards/Stats";
 import "./styles.css";
 
@@ -58,9 +57,7 @@ function AllCustomers() {
         <Stats count={count} title="customers" icon={IconUsersGroup}  />
         <SearchInput search={search} setSearch={setSearch} />
       </div>
-      <div className="filters">
-        <h3 className="filters-title">Filters</h3>
-      </div>
+      
       <div>
         <CustomerTable customers={customers} />
       </div>

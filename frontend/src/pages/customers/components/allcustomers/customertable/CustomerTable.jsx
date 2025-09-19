@@ -1,12 +1,13 @@
+import "./customerTable.css"
 function CustomerTable({ customers }) {
 
     return (
-        <div className="customer-table">
+        <div className="customer-table-container">
             <h3 className="table-title">Customer Table</h3>
             {
                 customers.length > 0 ? (
-                    <table style={{ width: "100%", borderCollapse: "collapse" ,color:"black"}}>
-                        <thead>
+                    <table style={{ width: "100%", borderCollapse: "collapse" ,color:"black"}} className="customer-table">
+                        <thead className="table-header">
                             <tr>
                                 <th>Image</th>
                                 <th>Name</th>

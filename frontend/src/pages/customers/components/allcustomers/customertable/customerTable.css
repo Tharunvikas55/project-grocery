@@ -1,0 +1,7 @@
+.customer-table{
+    background-color: rgb(38, 125, 248);  
+}
+table,th,tbody,td{
+    
+    border: 2px solid;
+}

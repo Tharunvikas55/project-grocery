@@ -8,6 +8,7 @@ function AddCustomer() {
   const [imageUrl, setImageUrl] = useState("");
   const fileInputRef = useRef(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");  
   const [userDetails, setUserDetails] = useState({
     username: "",
     email: "",
@@ -20,9 +21,6 @@ function AddCustomer() {
     image: "",
   });
 
-  const [error, setError] = useState("");
-
-  
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
@@ -43,12 +41,10 @@ function AddCustomer() {
 
   const handleUpload = async () => {
     setLoading(true);
-    console.log(file);
 
     const uploadedimageUrl = await awsImageUpload(file);
     setLoading(false);
     setImageUrl(uploadedimageUrl);
-    console.log(uploadedimageUrl);
   };
 
   const handleSubmit = async (e) => {
