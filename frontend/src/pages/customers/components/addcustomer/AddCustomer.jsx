@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import "./addCustomer.css";
 import awsImageUpload from "../../../../utils/awsImageUpload";
@@ -8,19 +8,43 @@ function AddCustomer() {
   const [imageUrl, setImageUrl] = useState("");
   const fileInputRef = useRef(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");  
+  const [error, setError] = useState("");
   const [userDetails, setUserDetails] = useState({
     username: "",
     email: "",
     address: "",
     district: "",
     state: "",
-    zip: "",
+    pincode: "",
     phone: "",
     role: "",
     image: "",
   });
 
+  useEffect(() => {
+    return () => {
+      if (file) URL.revokeObjectURL(file);
+    };
+  }, [file]);
+
+  const validateForm = () => {
+    if (!userDetails.username || !userDetails.email || !userDetails.phone)
+      return "Please fill in all required fields.";
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(userDetails.email)) return "Invalid email format.";
+
+    const phoneRegex = /^\d{10}$/;
+    if (!phoneRegex.test(userDetails.phone))
+      return "Invalid phone number format.";
+
+    return null;
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setUserDetails((prev) => ({ ...prev, [name]: value }));
+  };
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
@@ -41,7 +65,6 @@ function AddCustomer() {
 
   const handleUpload = async () => {
     setLoading(true);
-
     const uploadedimageUrl = await awsImageUpload(file);
     setLoading(false);
     setImageUrl(uploadedimageUrl);
@@ -49,67 +72,40 @@ function AddCustomer() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!userDetails.username || !userDetails.email || !userDetails.phone) {
-      setError("Please fill in all required fields.");
+    const errorMsg = validateForm();
+    if (errorMsg) {
+      setError(errorMsg);
       return;
     }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(userDetails.email)) {
-      setError("Invalid email format.");
-      return;
-    }
-    const phoneRegex = /^\d{10}$/;
-    if (!phoneRegex.test(userDetails.phone)) {
-      setError("Invalid phone number format.");
-      return;
-    }
-    const postData = {
-      ...userDetails,
-      image: imageUrl,
-    };
+    try {
+      setLoading(true);
+      const postData = { ...userDetails, image: imageUrl };
+      await axios.post(
+        `${import.meta.env.VITE_API_BASE_URL}/customers`,
+        postData
+      );
 
-    axios
-      .post(import.meta.env.VITE_API_BASE_URL + "/customers", postData)
-      .then((response) => {
-        console.log("Customer added successfully:", response.data);
-        setUserDetails({
-          username: "",
-          email: "",
-          address: "",
-          district: "",
-          state: "",
-          zip: "",
-          phone: "",
-          role: "",
-          image: "",
-        });
-      })
-      .catch((error) => {
-        console.error("Error adding customer:", error);
-        if (
-          error.response &&
-          error.response.data &&
-          error.response.data.message ===
-            "Customer with this email or phone already exists."
-        ) {
-          setError("*Email or Phone already exists");
-        } else {
-          alert("Error adding customer. Please try again.");
-          setUserDetails({
-            username: "",
-            email: "",
-            address: "",
-            district: "",
-            state: "",
-            zip: "",
-            phone: "",
-            role: "",
-            image: "",
-          });
-        }
+      setUserDetails({
+        username: "",
+        email: "",
+        address: "",
+        district: "",
+        state: "",
+        pincode: "",
+        phone: "",
+        role: "",
+        image: "",
       });
+      setFile(null);
+      setImageUrl("");
+      setError("");
+    } catch (err) {
+      console.error(err);
+      setError(err.response?.data?.message || "Failed to add customer");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -123,10 +119,8 @@ function AddCustomer() {
             type="text"
             placeholder="Username"
             name="username"
-            onChange={(e) =>
-              setUserDetails({ ...userDetails, username: e.target.value })
-            }
             value={userDetails.username}
+            onChange={handleChange}
           />
         </div>
         <div className="form-group">
@@ -137,10 +131,8 @@ function AddCustomer() {
             type="text"
             placeholder="user@example.com"
             name="email"
-            onChange={(e) =>
-              setUserDetails({ ...userDetails, email: e.target.value })
-            }
             value={userDetails.email}
+            onChange={handleChange}
           />
         </div>
         <div className="address-group">
@@ -152,24 +144,20 @@ function AddCustomer() {
               type="text"
               placeholder=""
               name="address"
-              onChange={(e) =>
-                setUserDetails({ ...userDetails, address: e.target.value })
-              }
               value={userDetails.address}
+              onChange={handleChange}
             />
           </div>
           <div className="form-group">
-            <label htmlFor="zip" className="form-label">
+            <label htmlFor="pincode" className="form-label">
               Pincode
             </label>
             <input
               type="text"
               placeholder="6-digits"
-              name="zip"
-              onChange={(e) =>
-                setUserDetails({ ...userDetails, zip: e.target.value })
-              }
-              value={userDetails.zip}
+              name="pincode"
+              onChange={handleChange}
+              value={userDetails.pincode}
             />
           </div>
           <div className="form-group">
@@ -180,9 +168,7 @@ function AddCustomer() {
               type="text"
               placeholder=""
               name="district"
-              onChange={(e) =>
-                setUserDetails({ ...userDetails, district: e.target.value })
-              }
+              onChange={handleChange}
               value={userDetails.district}
             />
           </div>
@@ -194,9 +180,7 @@ function AddCustomer() {
               type="text"
               placeholder=""
               name="state"
-              onChange={(e) =>
-                setUserDetails({ ...userDetails, state: e.target.value })
-              }
+              onChange={handleChange}
               value={userDetails.state}
             />
           </div>
@@ -209,9 +193,7 @@ function AddCustomer() {
             type="text"
             placeholder="Phone"
             name="phone"
-            onChange={(e) =>
-              setUserDetails({ ...userDetails, phone: e.target.value })
-            }
+            onChange={handleChange}
             value={userDetails.phone}
           />
         </div>
@@ -270,9 +252,7 @@ function AddCustomer() {
             className="select-input"
             name="role"
             id="role"
-            onChange={(e) =>
-              setUserDetails({ ...userDetails, role: e.target.value })
-            }
+            onChange={handleChange}
             value={userDetails.role}
           >
             <option value="" className="select-option">
@@ -287,7 +267,7 @@ function AddCustomer() {
           </select>
         </div>
         {error && <p className="error-message">{error}</p>}
-        <button type="submit" className="submit-button">
+        <button type="submit" className="submit-button" disabled={loading}>
           Add Customer
         </button>
       </form>

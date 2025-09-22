@@ -1,9 +1,7 @@
 import AWS from "aws-sdk";
 
 async function awsImageUpload(file) {
-
-    console.log(file);
-    
+   
     const S3_BUCKET = import.meta.env.VITE_AWS_BUCKET_NAME;
     const REGION = import.meta.env.VITE_AWS_REGION;
 

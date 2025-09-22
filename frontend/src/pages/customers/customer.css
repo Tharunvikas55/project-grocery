@@ -7,12 +7,10 @@
   gap: 10px;
   margin-bottom: 20px;
   padding-bottom: .5rem;
-  /* border-bottom: #a4a5a7 4px solid; */
 }
 
 .tab{
   padding: 10px 20px;
-  /* border: 1px solid #ccc; */
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s, color 0.3s;
@@ -22,11 +20,16 @@
 
 .tab.active {
   color: rgb(0, 0, 0);
-  /* border-color: linear-gradient(to top, rgba(255,0,0,0), rgb(255, 255, 255)); */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 1);
 }
 
 .tab-content{
   background-color: inherit;
   width: 100%;
+}
+
+@media screen and (max-width: 768px) {
+  .customer-tabs{
+    justify-content: center;
+  }
 }

@@ -1,0 +1,12 @@
+.edit-customer-container{
+    padding: 10px;
+    border-radius: 8px;
+    margin: auto;
+    box-shadow: 0 10px 10px 10px rgba(0, 0, 0, 0.1);
+    
+}
+
+.customer-form{
+    max-width: 600px;
+    margin: auto;
+}

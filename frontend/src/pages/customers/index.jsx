@@ -8,7 +8,6 @@ function Customers() {
 
   return (
     <div className="customer-component">
-      {/* Tab */}
       <div className="customer-tabs">
         <div
           className={`tab ${!openModel ? "active" : ""}`}

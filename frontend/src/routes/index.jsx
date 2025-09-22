@@ -4,6 +4,8 @@ import { Children } from "react";
 import Customers from "../pages/customers";
 import ProductHome from "../pages/product";
 import App from "../App";
+import CustomerDetails from "../pages/customers/components/customerDetails/CustomerDetails";
+import EditCustomer from "../pages/customers/components/editcustomer/EditCustomer";
 
 const AppRouter = () => {
   const routes = createBrowserRouter([
@@ -18,15 +20,27 @@ const AppRouter = () => {
         {
           path: "customers",
           element: <Customers />,
-          },
-          {
-            path: "products",
-            element: <ProductHome />,
-          }
+        },
+        {
+          path: "customers/details/:id",
+          element: <CustomerDetails />,
+        },
+        {
+          path: "customers/edit/:id",
+          element: <EditCustomer />,
+        },
+        {
+          path: "products",
+          element: <ProductHome />,
+        },
       ],
     },
   ]);
-  return <RouterProvider router={routes} />;
+  return (
+    <>
+      <RouterProvider router={routes} />
+    </>
+  );
 };
 
 export default AppRouter;
