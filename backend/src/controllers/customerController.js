@@ -6,7 +6,7 @@ const { Op } = Sequelize;
 getCustomerCount = async (req, res) => {
     try {
         const count = await CustomerModel.count();
-        res.status(200).json(count);
+        res.status(200).json({ success: true, data: count, message: "Customer Count fetched successfully" });
     } catch (error) {
         console.error("Error getting customer count:", error);
         res.status(500).json({ message: "Internal server error" });
@@ -29,7 +29,24 @@ getCustomer = async (req, res) => {
             };
         }
         const customers = await CustomerModel.findAll({ where });
-        res.status(200).json(customers);
+        res.status(200).json({ success: true, data: customers, message: "Customer data fetched successfully" });
+    } catch (error) {
+        console.error("Error getting customer:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+}
+
+getCustomerById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        console.log(req.params.id);
+
+        const customers = await CustomerModel.findOne({
+            where: {
+                id: id
+            }
+        });
+        res.status(200).json({ success: true, data: customers, message: "Customer fetched successfully" });
     } catch (error) {
         console.error("Error getting customer:", error);
         res.status(500).json({ message: "Internal server error" });
@@ -38,10 +55,10 @@ getCustomer = async (req, res) => {
 
 postCustomer = async (req, res) => {
     try {
-        const { username, email, phone, address, district, state, zip, role, image } = req.body;
+        const { username, email, phone, address, district, state, pincode, role, image } = req.body;
 
         if (!username || !email || !phone || !address) {
-            return res.status(400).json({ message: "Username, email, phone, and address are required." });
+            return res.status(400).json({ success: false, message: "Username, email, phone, and address are required." });
         }
 
         const existingCustomer = await CustomerModel.findOne({
@@ -51,54 +68,100 @@ postCustomer = async (req, res) => {
         });
 
         if (existingCustomer) {
-            return res.status(409).json({ message: "Customer with this email or phone already exists." });
+            return res.status(409).json({ success: false, message: "Customer email or phone already exists." });
         }
 
-        const newCustomer = await CustomerModel.create({
+        await CustomerModel.create({
             name: username,
             email,
             phone,
             address,
             district,
             state,
-            pincode: zip,
+            pincode,
             role,
             image
         });
 
-        res.status(201).json(newCustomer);
+        res.status(201).json({ success: true, message: "New customer added successfully" });
     } catch (error) {
         console.error("Error creating customer:", error);
         res.status(500).json({ message: "Internal server error" });
     }
 }
 
-fetchAddress = async (req, res) => {
+updateCustomer = async (req, res) => {
     try {
+        const { id } = req.params;
+        const { name, email, phone, address, district, state, pincode, role, image } = req.body;
 
-        const address = await CustomerModel.findAll({ attributes: ['address'] });
-        res.status(200).json(address);
-        // const { address, phone } = req.query;
+        const existingCustomer = await CustomerModel.findOne({
+            where: {
+                [Sequelize.Op.or]: [{ email }, { phone }], id: { [Op.ne]: id }
+            }
+        });
 
-        // const filters = {};
-        // if (address) {
-        //     filters.address = { [Sequelize.Op.iLike]: `%${address}%` };
-        // }
-        // if (phone) {
-        //     filters.phone = { [Sequelize.Op.iLike]: `%${phone}%` };
-        // }
+        if (!existingCustomer) {
+            return res.status(409).json({ message: "Customer does not exists." });
+        }
 
-        // const customers = await CustomerModel.findAll({ where: filters });
-        // res.status(200).json(customers);
+        const updatedCustomer = await CustomerModel.update({
+            name,
+            email,
+            phone,
+            address,
+            district,
+            state,
+            pincode,
+            role,
+            image
+        }, {
+            where: {
+                id: id
+            }
+        });
+
+        if (!updatedCustomer) {
+            return res.status(404).json({ success: false, message: "Customer not found" });
+        }
+
+        res.status(200).json({ success: false, message: "Customer updated successfully" });
     } catch (error) {
-        console.error("Error filtering customers:", error);
-        res.status(500).json({ message: "Internal server error" });
+        res.status(500).json({ success: false, message: "Server Error", error });
+    }
+};
+
+deleteCustomerById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const existingCustomer = await CustomerModel.findOne({
+            where: {
+                id
+            }
+        });
+
+        if (!existingCustomer) {
+            return res.status(409).json({ success: false, message: "Customer not exists." });
+        }
+        console.log(existingCustomer);
+
+        const response = await CustomerModel.destroy({
+            where: {
+                id
+            }
+        });
+
+        res.status(200).json({ success: true, message: "customer deleted successfully" });
+
+    } catch (error) {
+        res.status(500).json({ message: "Server Error", error });
     }
 }
 
 module.exports = {
     getCustomerCount,
     getCustomer,
+    getCustomerById,
     postCustomer,
-    fetchAddress
+    updateCustomer, deleteCustomerById
 };
