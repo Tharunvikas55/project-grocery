@@ -39,7 +39,6 @@ getCustomer = async (req, res) => {
 getCustomerById = async (req, res) => {
     try {
         const { id } = req.params;
-        console.log(req.params.id);
 
         const customers = await CustomerModel.findOne({
             where: {

@@ -28,10 +28,10 @@ function AllCustomers() {
       const queryObj = {};
       if (search) queryObj.search = search;
 
-      const queryString = new URLSearchParams(queryObj).toString();
+      const queryString = "?"+new URLSearchParams(queryObj).toString();
 
       const response = await axios.get(
-        `${import.meta.env.VITE_API_BASE_URL}/customers?${queryString}`
+        `${import.meta.env.VITE_API_BASE_URL}/customers${queryString}`
       );
 
       setCustomers(response.data.data);

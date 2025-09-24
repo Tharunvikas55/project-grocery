@@ -1,11 +1,11 @@
 .customer-component{
-  padding: 20px;
+  padding: .4rem;
   }
   
 .customer-tabs{
   display: flex;
   gap: 10px;
-  margin-bottom: 20px;
+  margin-bottom: .5rem;
   padding-bottom: .5rem;
 }
 

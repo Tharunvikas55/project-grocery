@@ -1,0 +1,34 @@
+/* .ledger-component {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; 
+}
+.top {
+  height: 50vh; 
+  background-color: #a2d2ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bottom {
+  flex: 1; 
+  display: flex;
+  flex-direction: row;
+}
+
+.left {
+  flex: 1; 
+  background-color: #ffc8dd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.right {
+  flex: 1; 
+  background-color: #caffbf;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+} */

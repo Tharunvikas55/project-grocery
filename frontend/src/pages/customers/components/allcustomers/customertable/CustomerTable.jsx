@@ -6,7 +6,7 @@ import { IconReceiptRupee } from "@tabler/icons-react";
 function CustomerTable({ customers, onDelete }) {
   return (
     <div className="customer-table-container">
-      <h3 className="table-title">Customer Table</h3>
+      <div className="table-title">Customer Table</div>
       {customers.length > 0 ? (
         <table className="customer-table">
           <thead className="table-header">
@@ -55,7 +55,7 @@ function CustomerTable({ customers, onDelete }) {
                 </td>
                 <td>
                   <img
-                    src={customer.image}
+                    src={customer.image || customer.name}
                     alt={customer.name}
                     className="customer-image"
                   />

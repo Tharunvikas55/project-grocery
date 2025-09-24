@@ -6,6 +6,7 @@ import ProductHome from "../pages/product";
 import App from "../App";
 import CustomerDetails from "../pages/customers/components/customerDetails/CustomerDetails";
 import EditCustomer from "../pages/customers/components/editcustomer/EditCustomer";
+import Ledger from "../pages/ledger";
 
 const AppRouter = () => {
   const routes = createBrowserRouter([
@@ -32,6 +33,10 @@ const AppRouter = () => {
         {
           path: "products",
           element: <ProductHome />,
+        },
+        {
+          path: "customers/:id/ledger",
+          element: <Ledger />,
         },
       ],
     },

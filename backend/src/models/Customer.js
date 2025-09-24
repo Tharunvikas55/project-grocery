@@ -56,6 +56,10 @@ const CustomerModel = sequelize.define('Customer', {
     timestamps: true
 });
 
+CustomerModel.associate = (models) => {
+    CustomerModel.hasMany(models.Ledger, { foreignKey: 'id' });
+};
+
 module.exports = CustomerModel;
 
 

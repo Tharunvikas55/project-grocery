@@ -5,27 +5,28 @@ const bcrypt = require('bcrypt');
 require('dotenv').config();
 const sequelize = require('./src/config/sequelizeConfig');
 const UserModel = require("./src/models/User")
-const CustomerModel = require("./src/models/Customer")
+const CustomerModel = require('./src/models/Customer');
+const LedgerModel=require("./src/models/Ledger")
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(cors());
-app.use(bodyParser.json()); 
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
- async function seedAdmin() {
+async function seedAdmin() {
   try {
     const existingAdmin = await UserModel.findOne({ where: { role: 'admin' } });
 
     if (existingAdmin) {
       console.log('⚠️ Admin already exists. Skipping seeding.');
-      return ;
+      return;
     }
 
-    const hashedPassword = await bcrypt.hash('superAdmin123', 10); 
+    const hashedPassword = await bcrypt.hash('superAdmin123', 10);
 
-     await UserModel.create({
+    await UserModel.create({
       username: 'Super Admin',
       email: 'admin@example.com',
       password: hashedPassword,
@@ -36,13 +37,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
     console.log('✅ Admin user seeded successfully.');
   } catch (error) {
     console.error('❌ Error seeding admin user:', error);
-  } 
+  }
 }
 
-sequelize.authenticate().then(async() => {
+sequelize.authenticate().then(async () => {
   console.log('✅ Database connected.');
 
-  await sequelize.sync({force: false});
+  await sequelize.sync({ force: false });
 
   await seedAdmin();
 

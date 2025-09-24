@@ -9,6 +9,7 @@ function Customers() {
   return (
     <div className="customer-component">
       <div className="customer-tabs">
+        
         <div
           className={`tab ${!openModel ? "active" : ""}`}
           onClick={() => setOpenModel(false)}
